@@ -1,4 +1,4 @@
-\documentclass[oupdraft]{sysbio_sse}
+\documentclass[oupdraft]{sysbio}
 % \usepackage[colorlinks=true, urlcolor=citecolor, linkcolor=citecolor, citecolor=citecolor]{hyperref}
 \usepackage{url}
 
@@ -12,29 +12,26 @@
 \begin{document}
 
 % Title of paper
-\title{Systematic Biology SSE \LaTeX{} Template}
+\title{Lagrange-ng: The next generation of Lagrange}
 % Each important word in the title should begin with a capital letter
 
 % List of authors, with corresponding author marked by asterisk
 \author{Ben Bettisworth$^{1,\ast}$, Stephen Smith$^{2}$, and
-  Alexandros Stamatakis,$^{1}$\\[4pt]
+  Alexandros Stamatakis$^{1}$\\[4pt]
   % Author addresses
-  \textit{$^{1}$~Computational Molecular Evolution Group, Heidleberg Institute for Theoretical Studies, Heidelberg,
+  \textit{$^{1}$~Computational Molecular Evolution Group, Heidelberg Institute for Theoretical Studies, Heidelberg,
     Germany}
   \\
   \textit{$^{2}$~Department, Institution, City, Post Code, Country}
   \\[2pt]
   % E-mail address for correspondence
-  \textit{*Direct all correspondence to ben.bettisworth@h-its.org}}
+  \textit{*Please direct all correspondence to \url{ben.bettisworth@h-its.org}}}
 % Identify the name, address, telephone/fax numbers, and e-mail address for the author who will receive proofs and be designated the "corresponding author" in text.
 
-% Running headers of paper:
+% Running headers
 \markboth%
-% First field is the short list of authors
 {Ben Bettisworth}
-% Second field is the short title of the paper
 {Lagrange-NG}
-% This should be shortened version of the title and no greater than 50 characters
 
 \maketitle
 
@@ -47,34 +44,24 @@
 \lipsum[2-3]
 
 \bigskip
-% Each important word in the heading level 1 should begin with a capital letter; no heading for the introduction
-% Please note that the level 1 headings given here, e.g. Description, are suggestions only
-\section{Description}
-\label{sec:description}
+\section{Description}\label{sec:description}
 
-\lipsum[4] \cite{ree_likelihood_2005}
-
-% Each important word in the heading level 2 should begin with a capital letter
+\lipsum[4-6]~\cite{ree_likelihood_2005}
 
 \bigskip
-\section{Performance}
-\label{sec:performance}
+\section{Performance}\label{sec:performance}
 
 \lipsum[5]
 
-% First word and proper nouns only should begin with a capital letter in heading level 3
-
 \bigskip
 
-\section{Biological Examples}
-\label{sec:bio-examples}
+\section{Biological Examples}\label{sec:bio-examples}
 
 \lipsum[6]
 
 \bigskip
 
-\section{Availability}
-\label{sec:availability}
+\section{Availability}\label{sec:availability}
 
 \lipsum[7]
 
@@ -86,18 +73,9 @@
 
 \lipsum[8][2]
 
-%Data available from the Dryad Digital Repository:
-% \href{http://dx.doi.org/10.5061/dryad.[NNNN]}%
-% {http://dx.doi.org/10.5061/dryad.[NNNN]}.
-%\url{http://dx.doi.org/10.5061/dryad.[NNNN]}.
-
 \bigskip\bigskip
 
-%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
-
-% The best way to enter references is to use BibTeX.
-
-\bibliographystyle{vancouver}
+\bibliographystyle{rusnat}
 \bibliography{references}
 
 \end{document}
