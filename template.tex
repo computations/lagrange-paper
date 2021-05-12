@@ -1,7 +1,5 @@
 \documentclass{article}
 
-
-
 \usepackage{arxiv}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
@@ -14,25 +12,23 @@
 \usepackage{microtype}      % microtypography
 \usepackage{lipsum}		% Can be removed after putting your text content
 \usepackage{graphicx}
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 \usepackage{doi}
-
-
 
 \title{Lagrange-ng: The next generation of the DEC model}
 
 \author{\href{https://orcid.org/0000-0002-9130-6878}{\includegraphics[scale=0.06]{orcid.pdf}\hspace{1mm}Ben Bettisworth}\thanks{} \\
-	Computational Molecular Evolution\\
-	Heidelberg Institute for Theoretical Studies\\
-	Heidelberg, Germany \\
-	\texttt{ben.bettisworth@h-its.org} \\
-	%% examples of more authors
-	\And
-    Alexandros Stamatakis\\
-    Computational Molecular Evolution\\
-	Heidelberg Institute for Theoretical Studies\\
-	Heidelberg, Germany\\
-	\texttt{alexandros.stamatakis@h-its.org} \\
+  Computational Molecular Evolution\\
+  Heidelberg Institute for Theoretical Studies\\
+  Heidelberg, Germany \\
+  \texttt{ben.bettisworth@h-its.org} \\
+  %% examples of more authors
+  \And
+  Alexandros Stamatakis\\
+  Computational Molecular Evolution\\
+  Heidelberg Institute for Theoretical Studies\\
+  Heidelberg, Germany\\
+  \texttt{alexandros.stamatakis@h-its.org} \\
 }
 
 \renewcommand{\shorttitle}{\textit{arXiv} Template}
@@ -41,27 +37,33 @@
 %%% Once the PDF is generated, you can check the metadata with
 %%% $ pdfinfo template.pdf
 \hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={Ben Bettisworth, Alexandros Stamatakis},
-pdfkeywords={},
+  pdftitle={A template for the arxiv style},
+  pdfsubject={q-bio.NC, q-bio.QM},
+  pdfauthor={Ben Bettisworth, Alexandros Stamatakis},
+  pdfkeywords={},
 }
 
 \begin{document}
 \maketitle
 
-
 \begin{abstract}
 \end{abstract}
 
-
-% keywords can be removed
 \keywords{First keyword \and Second keyword \and More}
-
 
 \section{Introduction}
 
 \section{Background}
+
+Computation of the likelihood of a particular set of parameters under the DEC model proceeds in a fashion similar to the
+Felsenstein algorithm. In this algorithm, the computation starts from the tips and moves towards the root, storing
+intermediate results in buffers called conditional likelihood vectors. Please see \cite{yang2006computational} for a
+much more detailed explanation, including a detailed discussion about the savings involved with such a scheme. What is
+relevant for the discussion here is that the Felsenstein algorithm avoids excess computation by noticing that, at
+certain points in the computation of a likelihood on a tree, the only relevant number is the likelihood
+\textit{conditioned on the current state}.
+
+Typical phylogenetic likelihood computations have a computational cost that is dominated by simply updating the
 
 \section{Methods and Algorithms}
 \label{sec:methods}
@@ -70,7 +72,7 @@ pdfkeywords={},
 \label{sec:experiments}
 
 \section{Results}
-\label{sec:experiments}
+\label{sec:results}
 
 \section{Discussion}
 \label{sec:discussion}
@@ -78,32 +80,7 @@ pdfkeywords={},
 \section{Conclusion}
 \label{sec:conclusion}
 
-\bibliographystyle{unsrtnat}
-\bibliography{references} 
-
-%%% Uncomment this section and comment out the \bibliography{references} line above to use inline references.
-% \begin{thebibliography}{1}
-
-% 	\bibitem{kour2014real}
-% 	George Kour and Raid Saabne.
-% 	\newblock Real-time segmentation of on-line handwritten arabic script.
-% 	\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
-% 			International Conference on}, pages 417--422. IEEE, 2014.
-
-% 	\bibitem{kour2014fast}
-% 	George Kour and Raid Saabne.
-% 	\newblock Fast classification of handwritten on-line arabic characters.
-% 	\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
-% 			International Conference of}, pages 312--318. IEEE, 2014.
-
-% 	\bibitem{hadash2018estimate}
-% 	Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
-% 	Jacovi.
-% 	\newblock Estimate and replace: A novel approach to integrating deep neural
-% 	networks with existing applications.
-% 	\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
-
-% \end{thebibliography}
-
+\bibliographystyle{acm}
+\bibliography{references}
 
 \end{document}
