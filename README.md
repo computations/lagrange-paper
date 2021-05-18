@@ -47,3 +47,4 @@ Below are the commands that should be run in the project folder:
 3. If you start another project based on this project, it would be nice to mention/link to this project.
 4. You are very welcome to contribute to this project.
 5. A good looking 2 column template can be found in https://github.com/brenhinkeller/preprint-template.tex.
+# lagrange-paper
