@@ -1,9 +1,11 @@
 \documentclass[oupdraft]{sysbio}
 % \usepackage[colorlinks=true, urlcolor=citecolor, linkcolor=citecolor, citecolor=citecolor]{hyperref}
-\usepackage{url}
 
 \usepackage{indentfirst}
+\usepackage{url}
 \usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{natbib}
 
 % Add history information for the article if required
 %\history{Received Month X, 20XX;
@@ -36,46 +38,138 @@
 \maketitle
 
 \begin{abstract}
-  {\lipsum[1]}
+  {}
   {Biogeography, Phylogenetics}
 \end{abstract}
 \newline
 
-\lipsum[2-3]
+The dispersal-extinction-cladogenesis (DEC) model~\citep{ree_likelihood_2005} is a widely used to analyze biogeographical
+data. Computation of likelihoods using this model, however, is characterized by exponential growth in with the number of
+regions under consideration. This is due to 2 factors: the regions are splayed into $2^r = s$ states; and computation of
+the transition matrix is $\mathcal{O}(s^3)$. Putting these two facts together, the complexity of computing a single
+evaluation of the DEC model is $\mathcal{O}((2^r)^3) = \mathcal{O}(2^{3r})$. In other words, computation of the
+likelihood is exponential with respect to the number of regions at hand. Therefore, the major constraining parameter to
+data analysis under the DEC model will be the number of regions.
+
+However, just computing the likelihood of the DEC model is not the most expensive step for parameter inference. Instead,
+computation of the transition matrix dominates the runtime, often accounting for 80\% or more of the runtime for a given
+inference.  The transition matrix is computed via an operation known as the matrix exponential. If $Q$ is a rate matrix,
+then the transition matrix $P = e^{tQ}$. Much effort has been spent finding the best way to compute this operation
+\citep{moler_nineteen_2003}, but it still remains a challenging operation to compute efficiently and accurately.
+Additionally, the DEC model is non-reversible (I.E. uses a non-symmetric rate matrix), which limits the possible methods
+of computing the matrix exponential, usually to less precise methods.
+
+So, the primary challenge to computing a likelihood using the DEC model is computing the matrix exponential quickly. In
+this work, we present a software implementation of the DEC model which contains a custom tooled version of the matrix
+exponential algorithm called scaled and squaring, which can be used to compute results using the DEC model. This
+software is a nearly complete rewrite of the Lagrange software by \citet{ree_likelihood_2005}. Additionally, we have
+implemented a task-based hybrid multi-threading approach, which will greatly accelerate analysis of datasets with many
+taxa. Furthermore, we also improve the numerical stability of the original software, and fix a major bug which we
+discovered during development (Personal communication with Smith). Finally, in order to ensure that we match the
+original implementation, we implemented a novel method of comparing range distribution on trees, which is based on the
+Wasserstein metric.
 
 \bigskip
-\section{Description}\label{sec:description}
+\section{Software Description}\label{sec:description}
 
-\lipsum[4-6]~\cite{ree_likelihood_2005}
+Lagrange-ng is an almost complete rewrite of the original (unpublished) C++ version of Lagrange. As such, Lagrange-ng
+retains all the functionality of Lagrange, but does it more efficiently, and also implements a parallel version of the
+same model. Improvements to Lagrange fall into one of 3 broad categories. First and largest is the support for parallel
+computing, via a hybrid task based scheme. The second category includes the use of more efficient numerical methods,
+including a custom tuned version of the matrix exponential. Third and final, there are the general improvements and
+optimizations, which individually don't account for much of the efficiency gain, but together amount to a substantial
+improvement.
+
+Lagrange-ng can be downloaded from github at \url{https://github.com/computations/lagrange-ng}. To build the software,
+the only dependancies are a C++ compiler, and CMake. Optionally, Lagrange-ng can be built with the system versions of
+OpenBLAS \citep{openblas} and NLOpt \citep{nelder_simplex_1965, johnson_stevengjnlopt_2021}. Tests and tooling for
+Lagrange-ng are written in Python 3 \citep{python3}, with additional support from Numpy \citep{numpy}, SciPy
+\citep{scipy}, and seaborn \citep{Waskom2021}.
 
 \bigskip
 \section{Performance}\label{sec:performance}
 
-\lipsum[5]
+\begin{figure}
+  \noindent
+  \includegraphics[width=\linewidth]{all_results_violin.png}
+  \caption{Comparision of runtimes between lagrange (left) and lagrange-ng (right) with lagrange-ng not using workers
+    (top) and using 4 workers (bot). Results were obtained by generating 100 datasets randomly. Each program was given a
+    different set of datasets, including Lagrange-ng with and without workers. Note that the original Lagrange was not
+    run with workers, as it does not support them. Instead, the data has been replicated for comparison's sake. Time is
+    in seconds. Figure was generated using seaborn \citep{Waskom2021}}
+\end{figure}
 
 \bigskip
 
+\section{Validation}\label{sec:Validation}
+
+Lagrange-ng replaces core numerical routines of Lagrange. Changes in numerical routines are often associated with
+difficult and subtle bugs. We sought to ensure that Lagrange-ng and Lagrange produced the same results. To this end, we
+developed both a pipeline to generate random datasets, run both Lagrange-ng and Lagrange, and compare the results of the
+two programs. To compare results, we developed a distance to evaluate between distributions on trees based on the
+Wasserstein metric CITE. The details of how to calculate the metric are in the Supplementary material. Nonetheless, we
+give a summary here.
+
+To compute the distance between two ancestral range distributions for a given tree, embed the range into a hypercube
+graph, and then use that graph to compute the Wasserstein metric between the distributions for each node. This metric is
+then normalized to be between 0.0 and 1.0 by dividing by the maximum total distance, and then averaged over all nodes.
+This method has the property that it accurately reflects the transitions between states in the DEC model. 
+
+We use this metric to ensure that Lagrange-ng obtains the same results for the same input as Lagrange (at least as much
+as possible). We do this by randomly generating datasets (both trees and extant range distributions) for a given number
+of taxa and ranges, and then running Lagrange to obtain the ground truth. From there, we run Lagrange-ng on the same
+dataset, compute the results, and then ensure that the computed distance is below $1\times 10^{-4}$. However, some
+datasets will yield different results even with a very tight tolerance, due to the optimization routines finding a
+different optimum. So, for datasets which result in distributions who's distance is over tolerance fail, we run a linear
+regression on the inferred values for the dispersion rate and the extinction rate against the distribution distance. If
+the result is ``legitimately'' different, then there should be a strong correlation. If there is not, then it indicates
+that there is a bug.
+
+We ran this comparison for 100 iterations on datasets created with 10, 50 and 100 taxa, and a number of regions between
+2 and 6. This yielded 15 datasets, and 1,500 total tests. Of these tests, 12 ($0.8\%$) produced distances over
+tolerance. The linear regression on the iterations over tolerance yielded a correlation coefficient of $0.99997$,
+indicating that the failed runs are a product of different optimizations, rather than errors in the code.
+
+\section{Results}\label{sec:Results}
+
+Lagrange-ng is substantially faster datasets with a moderate number of regions ($>5$), even when only using a single
+core. When using multiple cores, the efficiency increases even further to .....
+
 \section{Biological Examples}\label{sec:bio-examples}
 
-\lipsum[6]
+While we conducted extensive tests on simulated data, it is still important that we ensure Lagrange-ng peforms correctly
+on real world examples. To this end, we have reproduced the results from 3 biogeographical studies that have been
+recently published.
+
+\begin{table}
+  \caption{Table of biological datasets used to verify Lagrange-ng.}
+  \label{tab:}
+  \begin{center}
+    \begin{tabular}[c]{l|r|r|r}
+      \hline
+      \multicolumn{1}{c|}{\textbf{Dataset Name}} & 
+      \multicolumn{1}{c|}{\textbf{Regions}} & 
+      \multicolumn{1}{c|}{\textbf{Taxa}} & 
+      \multicolumn{1}{c}{\textbf{Source}} \\
+      \hline
+      Sloths & 8 & 64 & \citet{varela_phylogeny_2019}\\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
 
 \bigskip
 
 \section{Availability}\label{sec:availability}
 
-\lipsum[7]
-
-\section{Acknowledgements}
-
-\lipsum[8][1]
+The software, tools, and data used for this paper are available online at \url{https://github.com/computations/lagrange-ng}.
 
 \section{Supplementary Material}
 
-\lipsum[8][2]
-
 \bigskip\bigskip
 
-\bibliographystyle{rusnat}
+\bibliographystyle{unsrtnat}
 \bibliography{references}
 
 \end{document}

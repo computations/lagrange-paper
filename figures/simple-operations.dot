@@ -1,0 +1,32 @@
+digraph structs{
+node[shape=record, fontname="Liberation Serif"]
+
+mrm [label="Make Rate\nMatrix | {Rate Matrix Index: 0 | Last Updated: 0 | Last 
+Execution: 0}"]
+
+lexpm [label="Left Expm | {Prob Matrix Index: 0 | Rate Matrix Index: 0 | t: 1.0
+| Last Execution : 0}"]
+rexpm [label="Right Expm | {Prob Matrix Index: 1 | Rate Matrix Index: 0 | t: 2.0
+| Last Execution : 0}"]
+
+ld [label="Left\nDispersion | {Top CLV Index: 0 | Bot CLV Index: 1 | Prob Matrix
+ Index: 0 | Last Execution: 0}"]
+rd [label="Right\nDispersion | {Top CLV Index: 2 | Bot CLV Index: 3 | Prob Matrix
+ Index: 1 | Last Execution: 0}"]
+
+
+split [label="Split | { Left CLV Index: 0 | Right CLV Index: 2 | Parent CLV
+Index: 4 | Last Execution : 0}"]
+
+{rank=same; ld; rd}
+
+split -> ld;
+split -> rd;
+
+ld -> lexpm;
+rd -> rexpm;
+
+lexpm -> mrm;
+rexpm -> mrm;
+
+}

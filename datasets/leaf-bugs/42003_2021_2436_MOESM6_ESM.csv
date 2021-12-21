@@ -1,0 +1,97 @@
+Species,A,B,C,D,E,F,G,H
+Chitoniscus brachysoma,0,0,0,0,0,0,0,1
+Chitoniscus feejeeanus,0,0,0,0,0,0,0,1
+Chitoniscus sarrameaensis,0,0,0,0,0,0,0,1
+Chitoniscus sp.,0,0,0,0,0,0,0,1
+Comptaphyllium caudatum,0,0,0,0,0,0,1,0
+Comptaphyllium caudatum,0,0,0,0,0,0,1,0
+Cryptophyllium animatum,1,0,0,0,0,0,0,0
+Cryptophyllium bankoi,1,0,0,0,0,0,0,0
+Cryptophyllium bollensi,1,0,0,0,0,0,0,0
+Cryptophyllium celebicum,0,0,0,1,0,0,0,0
+Cryptophyllium cf. drunganum,1,0,0,0,0,0,0,0
+Cryptophyllium chrisangi,0,1,0,0,0,0,0,0
+Cryptophyllium daparo,1,0,0,0,0,0,0,0
+Cryptophyllium echidna,0,0,0,1,0,0,0,0
+Cryptophyllium faulkneri,1,0,0,0,0,0,0,0
+Cryptophyllium icarus,1,0,0,0,0,0,0,0
+Cryptophyllium limogesi,1,0,0,0,0,0,0,0
+Cryptophyllium oyae,1,0,0,0,0,0,0,0
+Cryptophyllium parum,1,0,0,0,0,0,0,0
+Cryptophyllium phami,1,0,0,0,0,0,0,0
+Cryptophyllium rarum,1,0,0,0,0,0,0,0
+Cryptophyllium tibetense,1,0,0,0,0,0,0,0
+Cryptophyllium westwoodii,1,0,0,0,0,0,0,0
+Cryptophyllium westwoodii,1,0,0,0,0,0,0,0
+Cryptophyllium yunnanense,1,0,0,0,0,0,0,0
+Micropyhllium haskelli,0,0,0,0,1,0,0,0
+Nanophyllium asekiense,0,0,0,0,0,0,1,0
+Nanophyllium brevipenne,0,0,0,0,0,0,1,0
+Nanophyllium frondosum,0,0,0,0,0,0,1,0
+Nanophyllium rentzi,0,0,0,0,0,0,1,0
+Nanophyllium sp.,0,0,0,0,0,0,1,0
+Nanophyllium sp.,0,0,0,0,0,0,1,0
+Phyllium antonkozlovi,0,0,0,0,1,0,0,0
+Phyllium arthurchungi,0,0,1,0,0,0,0,0
+Phyllium bonifacioi,0,0,0,0,1,0,0,0
+Phyllium bourquei,0,0,0,0,1,0,0,0
+Phyllium bradleri,0,0,1,0,0,0,0,0
+Phyllium brossardi,0,0,1,0,0,0,0,0
+Phyllium cf. telnovi ,0,0,0,0,0,0,1,0
+Phyllium cf. woodi,0,0,0,0,0,1,0,0
+Phyllium chenqiae,0,0,1,0,0,0,0,0
+Phyllium cummingi,0,0,1,0,0,0,0,0
+Phyllium elegans,0,0,0,0,0,0,1,0
+Phyllium ericoriai 1,0,0,0,0,1,0,0,0
+Phyllium ericoriai 2,0,0,0,0,1,0,0,0
+Phyllium ericoriai 3,0,0,0,0,1,0,0,0
+Phyllium fallorum,0,0,0,0,0,1,0,0
+Phyllium gantungense,0,0,1,0,0,0,0,0
+Phyllium gardabagusi,0,1,0,0,0,0,0,0
+Phyllium hausleithneri,0,1,0,0,0,0,0,0
+Phyllium jacobsoni,0,1,0,0,0,0,0,0
+Phyllium letiranti,0,0,0,1,0,0,0,0
+Phyllium mabantai,0,0,0,0,0,1,0,0
+Phyllium mabantai,0,0,0,0,0,1,0,0
+Phyllium mamasaense,0,0,0,1,0,0,0,0
+Phyllium mindorense,0,0,0,0,1,0,0,0
+Phyllium nisus,0,1,0,0,0,0,0,0
+Phyllium palawanense,0,0,1,0,0,0,0,0
+Phyllium philippinicum,0,0,0,0,1,0,0,0
+Phyllium philippinicum,0,0,0,0,1,0,0,0
+Phyllium rubrum,0,1,0,0,0,0,0,0
+Phyllium rubrum,0,1,0,0,0,0,0,0
+Phyllium siccifolium,0,0,0,1,0,0,0,0
+Phyllium sp. 1,0,0,0,0,1,0,0,0
+Phyllium sp. 2,0,0,0,1,0,0,0,0
+Phyllium sp. 3,0,0,0,0,0,1,0,0
+Phyllium sp. 4,0,0,0,0,1,0,0,0
+Phyllium sp. 5,0,0,1,0,0,0,0,0
+Phyllium sp. 6,0,0,0,0,1,0,0,0
+Phyllium sp. 7,0,0,0,0,0,1,0,0
+Phyllium sp. 8,0,0,0,0,0,1,0,0
+Phyllium sp. 9,0,0,1,0,0,0,0,0
+Phyllium tobeloense,0,0,0,1,0,0,0,0
+Phyllium tobeloense,0,0,0,1,0,0,0,0
+Pseudomicrophyllium geryon ,0,0,0,0,1,0,0,0
+Pseudomicrophyllium pusillulum,0,0,0,0,1,0,0,0
+Pseudomicrophyllium pusillulum,0,0,0,0,1,0,0,0
+Pulchriphyllium abdulfatahi,0,1,0,0,0,0,0,0
+Pulchriphyllium agathyrsus,1,0,0,0,0,0,0,0
+Pulchriphyllium agnesagamaae,0,0,1,0,0,0,0,0
+Pulchriphyllium bioculatum,0,1,0,0,0,0,0,0
+Pulchriphyllium cf. maethoraniae,1,0,0,0,0,0,0,0
+Pulchriphyllium fredkugani,0,0,1,0,0,0,0,0
+Pulchriphyllium giganteum,0,1,0,0,0,0,0,0
+Pulchriphyllium giganteum,0,1,0,0,0,0,0,0
+Pulchriphyllium mannani,0,0,1,0,0,0,0,0
+Pulchriphyllium pulchifolium,0,1,0,0,0,0,0,0
+Pulchriphyllium pulchrifolium,0,1,0,0,0,0,0,0
+Pulchriphyllium pulchrifolium,0,1,0,0,0,0,0,0
+Pulchriphyllium rimiae,0,0,1,0,0,0,0,0
+Pulchriphyllium shurei,0,1,0,0,0,0,0,0
+Pulchriphyllium sinense,1,0,0,0,0,0,0,0
+Pulchriphyllium sp. 1,0,0,1,0,0,0,0,0
+Pulchriphyllium sp. 2,0,1,0,0,0,0,0,0
+Walaphyllium monteithi,0,0,0,0,0,0,1,0
+Walaphyllium zomproi,0,0,0,0,0,0,1,0

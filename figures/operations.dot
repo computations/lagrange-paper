@@ -1,0 +1,43 @@
+digraph {
+node[shape=rect];
+rankdir="BT";
+
+spo1 [label="Split" color="Red" shape=ellipse];
+
+dop3 [label="Dispersion" color="Blue" shape=hexagon];
+
+dop4 [label="Dispersion" color="Blue" shape=hexagon];
+expm4 [label="Expm t=2.0", color="Green" shape=rect];
+
+spo2 [label="Split" color=Red shape=ellipse];
+dop1 [label="Dispersion" color=Blue shape=hexagon];
+dop2 [label="Dispersion" color=Blue shape=hexagon];
+eop1 [label="Expm t=1.0" color=Green shape=rect];
+mro [label="Make Rate Matrix"];
+
+tipa [label="Tip A" shape=triangle]
+tipb [label="Tip B" shape=triangle]
+tipc [label="Tip C" shape=triangle]
+
+dop1 -> spo2;
+dop2 -> spo2;
+
+tipa -> dop1;
+tipb -> dop2;
+
+eop1 -> dop1;
+eop1 -> dop2;
+eop1 -> dop3;
+
+mro -> eop1;
+
+spo2 -> dop3;
+
+tipc -> dop4;
+expm4 -> dop4;
+mro -> expm4;
+
+dop4 -> spo1;
+dop3 -> spo1;
+
+}

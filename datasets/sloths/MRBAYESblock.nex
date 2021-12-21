@@ -1,0 +1,85 @@
+#NEXUS
+
+begin mrbayes;
+
+ctype unordered: all;
+ctype ordered: 2 9 11 21 37 38 41 42 47 48 51 54 56 57 58 59 62 65 67 68 75 76 81 82 85 86 93 94 99 100 102 105 106 111 114 119 124 127 130 134 135 137 142 145 146 149 152 156 162 168 170 172 175 178 182 186 187 191 194 203 213 216 217 218 224 225 226 227 230 236 239 241 258 259 260 277 278 283 286;
+
+CHARSET morph1   =   1-36;
+CHARSET morph2   =   37-80;
+CHARSET morph3   =   81-195;
+CHARSET morph4   =   196-286;
+CHARSET morph5   =   287-361;
+
+partition PFinder = 5: morph1, morph2, morph3, morph4, morph5;
+set partition = PFinder;
+
+lset applyto =(1) coding=informative rates=gamma;
+lset applyto =(2) coding=informative rates=gamma;
+lset applyto =(3) coding=informative rates=gamma;
+lset applyto =(4) coding=informative rates=gamma;
+lset applyto =(5) coding=informative rates=gamma;
+unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all);
+
+prset applyto=(all) ratepr=variable;
+
+constraint sloths -1 = Octodontotherium Octomylodon Pseudoprepotherium Thinobadistes Lestodon Pleurolestodon Glossotherium Paramylodon Nematherium Catonyx Scelidotherium Mylodon CHOLOEPUS Acratocnus Neocnus Parocnus Megalocnus Pliomorphus Pliometanastes Megalonyx BRADYPUS Pronothrotherium Mionothropus Nothrotherium Nothrotheriops Eucholoeops Hapalops Planops Eremotherium Megatherium Schismotherium Pelecyodon Analcimorphus Ahytherium Megalonychotherium Megistonyx Proscelidodon Anisodontherium Prepoplanops Urumacotherium Proeremotherium Simomylodon Octodontobradys Brievabradys Lestobradys Valgipes Sibyllotherium Bolivartherium Thalassocnus Pyramiodontherium Paroctodontotherium Neonematherium Pseudortotherium Xyophorus Megathericulus Diabolotherium Pseudoglyptodon Baraguatherium Lakukullus Analcitherium Prepotherium Hyperleptus Australonyx Aymaratherium;
+constraint vermi -1 = Palaeomyrmidon CYCLOPES Protamandua TAMANDUA MYRMECOPHAGA;
+constraint cing -1 = Holmesina Glyptodont Prozaedyus EUPHRACTUS TOLYPEUTES;
+constraint pilo -1 = Palaeomyrmidon CYCLOPES Protamandua TAMANDUA MYRMECOPHAGA Octodontotherium Octomylodon Pseudoprepotherium Thinobadistes Lestodon Pleurolestodon Glossotherium Paramylodon Nematherium Catonyx Scelidotherium Mylodon CHOLOEPUS Acratocnus Neocnus Parocnus Megalocnus Pliomorphus Pliometanastes Megalonyx BRADYPUS Pronothrotherium Mionothropus Nothrotherium Nothrotheriops Eucholoeops Hapalops Planops Eremotherium Megatherium Schismotherium Pelecyodon Analcimorphus Ahytherium Megalonychotherium Megistonyx Proscelidodon Anisodontherium Prepoplanops Urumacotherium Proeremotherium Simomylodon Octodontobradys Brievabradys Lestobradys Valgipes Sibyllotherium Bolivartherium Thalassocnus Pyramiodontherium Paroctodontotherium Neonematherium Pseudortotherium Xyophorus Megathericulus Diabolotherium Pseudoglyptodon Baraguatherium Lakukullus Analcitherium Prepotherium Hyperleptus Australonyx Aymaratherium;
+prset topologypr=constraints(sloths,vermi,cing,pilo);
+mcmcp 
+ 
+filename=64S
+
+nruns=2
+
+nchains=8
+
+swapfreq=1
+
+samplefreq=1000
+
+printfreq=1000
+
+burninfrac=0.25
+
+temp=0.05
+
+nswap=1
+
+mcmcdiagn=Yes
+
+diagnfreq=10000
+
+diagnstat=Avgstddev
+
+savetrees=No
+
+minpartfreq=0.1
+
+allchains=No
+
+allcomps=No
+
+relburnin=Yes
+
+burnin=0
+
+stoprule=No
+
+stopval=0.05
+
+ordertaxa=No
+
+ngen=100000000;
+mcmc;
+sump;
+
+
+sumt
+contype=allcompat
+
+conformat=Figtree;
+
+end;
