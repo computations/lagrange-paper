@@ -78,10 +78,10 @@ same model. Improvements to Lagrange fall into one of 3 broad categories. First 
 computing, via a hybrid task based scheme. The second category includes the use of more efficient numerical methods,
 including a custom tuned version of the matrix exponential. Third and final, there are the general improvements and
 optimizations, which individually don't account for much of the efficiency gain, but together amount to a substantial
-improvement.
+improvement. A thorough explanation of the software can be found in the supplementary material.
 
-Lagrange-ng can be downloaded from github at \url{https://github.com/computations/lagrange-ng}. To build the software,
-the only dependancies are a C++ compiler, and CMake. Optionally, Lagrange-ng can be built with the system versions of
+Lagrange-ng can be downloaded from GitHub at \url{https://github.com/computations/lagrange-ng}. To build the software,
+the only dependencies are a C++ compiler, and CMake. Optionally, Lagrange-ng can be built with the system versions of
 OpenBLAS \citep{openblas} and NLOpt \citep{nelder_simplex_1965, johnson_stevengjnlopt_2021}. Tests and tooling for
 Lagrange-ng are written in Python 3 \citep{python3}, with additional support from Numpy \citep{numpy}, SciPy
 \citep{scipy}, and seaborn \citep{Waskom2021}.
@@ -89,14 +89,25 @@ Lagrange-ng are written in Python 3 \citep{python3}, with additional support fro
 \bigskip
 \section{Performance}\label{sec:performance}
 
+In order to determine the performance of Lagrange-ng relative to the original implementation, we generated a large
+number datasets randomly with a varying number of regions and ran either Lagrange or Lagrange-ng and recorded the
+runtime. Each dataset had 100 taxa, and either 5, 6, or 7 regions. We generated 100 datasets for each parameter set of
+taxa, regions and program. Furthermore, ran an additional series of performance evaluations on Lagrange-ng only with 8
+threads assigned to coarse grained parallelization. The results of this performance are shown in
+Figure~\ref{fig:all-results}.
+
 \begin{figure}
   \noindent
-  \includegraphics[width=\linewidth]{all_results_violin.png}
+  \begin{center}
+    \includegraphics[width=\linewidth]{all_results_violin.png}
+  \end{center}
   \caption{Comparision of runtimes between lagrange (left) and lagrange-ng (right) with lagrange-ng not using workers
-    (top) and using 4 workers (bot). Results were obtained by generating 100 datasets randomly. Each program was given a
+    (top) and using 8 workers (bot). Results were obtained by generating 100 datasets randomly. Each program was given a
     different set of datasets, including Lagrange-ng with and without workers. Note that the original Lagrange was not
     run with workers, as it does not support them. Instead, the data has been replicated for comparison's sake. Time is
-    in seconds. Figure was generated using seaborn \citep{Waskom2021}}
+    in seconds. Figure was generated using seaborn \citep{Waskom2021}
+    \label{fig:all-results}
+  }
 \end{figure}
 
 \bigskip
@@ -107,13 +118,13 @@ Lagrange-ng replaces core numerical routines of Lagrange. Changes in numerical r
 difficult and subtle bugs. We sought to ensure that Lagrange-ng and Lagrange produced the same results. To this end, we
 developed both a pipeline to generate random datasets, run both Lagrange-ng and Lagrange, and compare the results of the
 two programs. To compare results, we developed a distance to evaluate between distributions on trees based on the
-Wasserstein metric CITE. The details of how to calculate the metric are in the Supplementary material. Nonetheless, we
-give a summary here.
+Wasserstein metric \citep{vaserstein_markov_1969}. The details of how to calculate the metric are in the Supplementary
+material. Nonetheless, we give a summary here.
 
 To compute the distance between two ancestral range distributions for a given tree, embed the range into a hypercube
 graph, and then use that graph to compute the Wasserstein metric between the distributions for each node. This metric is
 then normalized to be between 0.0 and 1.0 by dividing by the maximum total distance, and then averaged over all nodes.
-This method has the property that it accurately reflects the transitions between states in the DEC model. 
+This method has the property that it accurately reflects the transitions between states in the DEC model.
 
 We use this metric to ensure that Lagrange-ng obtains the same results for the same input as Lagrange (at least as much
 as possible). We do this by randomly generating datasets (both trees and extant range distributions) for a given number
@@ -126,44 +137,67 @@ the result is ``legitimately'' different, then there should be a strong correlat
 that there is a bug.
 
 We ran this comparison for 100 iterations on datasets created with 10, 50 and 100 taxa, and a number of regions between
-2 and 6. This yielded 15 datasets, and 1,500 total tests. Of these tests, 12 ($0.8\%$) produced distances over
-tolerance. The linear regression on the iterations over tolerance yielded a correlation coefficient of $0.99997$,
-indicating that the failed runs are a product of different optimizations, rather than errors in the code.
-
-\section{Results}\label{sec:Results}
-
-Lagrange-ng is substantially faster datasets with a moderate number of regions ($>5$), even when only using a single
-core. When using multiple cores, the efficiency increases even further to .....
+2 and 6. This yielded 15 datasets, and 1,500 total tests.
 
 \section{Biological Examples}\label{sec:bio-examples}
 
-While we conducted extensive tests on simulated data, it is still important that we ensure Lagrange-ng peforms correctly
-on real world examples. To this end, we have reproduced the results from 3 biogeographical studies that have been
-recently published.
+While we conducted extensive tests on simulated data, it is still important that we ensure Lagrange-ng performs
+correctly on real world examples. To this end, we have reproduced the results from a previous study on sloths from
+\citet{varela_phylogeny_2019}. Additionally, we took the opportunity to reproduce the results using the tools specified
+in the paper as this gave us an opportunity to compare with BioGeoBEARS \citep{biogeobears}, a similar tool.
 
-\begin{table}
-  \caption{Table of biological datasets used to verify Lagrange-ng.}
-  \label{tab:}
-  \begin{center}
-    \begin{tabular}[c]{l|r|r|r}
-      \hline
-      \multicolumn{1}{c|}{\textbf{Dataset Name}} & 
-      \multicolumn{1}{c|}{\textbf{Regions}} & 
-      \multicolumn{1}{c|}{\textbf{Taxa}} & 
-      \multicolumn{1}{c}{\textbf{Source}} \\
-      \hline
-      Sloths & 8 & 64 & \citet{varela_phylogeny_2019}\\
-      \hline
-    \end{tabular}
-  \end{center}
-\end{table}
+In order to reproduce results, we downloaded the supplementary data from the Dryad repository associated with the
+publication. In order to run the analysis for both BioGeoBEARS and Lagrange-ng, we had to modify the data slightly. This
+involved correcting some names so that they matched, and removing the outgroup from the tree. These modifications appear
+to be in line with what the original authors must have done, because the results from both BioGeoBEARS and Lagrange-ng
+matches the results reported in the paper. Both BioGeoBEARS and Lagrange-ng were run with the same dataset, and the same
+number of cores on the same computer.
 
+\section{Results}\label{sec:Results}
+
+The validation of Lagrange-ng, when compared to Lagrange, is very successful, despite heavy modifications of nearly all
+critical code paths. Of the 1,500 tests, 12 ($0.8\%$) produced results with differences over tolerance when computed
+using our novel distance method. The linear regression for the tests over threshold yielded a correlation coefficient of
+$0.99997$, indicating that the failed runs are a product of differing optimizations, and not bugs in the tool.
+
+The ratio between mean runtimes for Lagrange and Lagrange-ng with 1 worker for 5, 6, and 7 regions is 1.15, 1.05, and
+0.96, respectively. The ratio between Lagrange and Lagrange-ng with 8 workers for 5, 6, and 7 regions is 3.56, 4.01, and
+3.97, respectively.
+
+However, Lagarange-ng fairs much better when compared with BioGeoBEARS. On the biological example, Lagrange-ng computed
+the result in about $1$ minute, while BioGeoBEARS took about $24$ minutes to analyze the data. BioGeoBEARS and
+Lagrange-ng inferred different optima for model parameters, with BioGeoBEARS achieving a slightly better likelihood
+score. However, this hasn't affected the qualitative results when comparing between the two tools. This is to say,
+BioGeoBEARS and Lagrange-ng both agree on the most likely distribution for every node.
+
+\section{Discussion}\label{sec:Discussion}
+
+We have shown that computation of biogeographical models can be greatly accelerated without a loss in quality of
+results. A 4 fold increase in speed over the original implementation, and a 24 fold increase in speed over BioGeoBEARS
+is very good. However, the parallel efficiency of 0.5 is disappointing. However, as detailed in the Supplementary
+Material, the efficiency increases as the number of taxa increases. This means that as datasets get more taxa rich, and
+run-times increase, Lagrange-ng will utilize it's computational resources more efficiently.
+
+Future work on Lagrange-ng includes extending the range of models that can be computed to the DIVA and BAYAREA family of
+models CITE THESE MODELS. Additionally, there is further work to be done optimizing the execution of the current models.
+There are three areas in which the current performance can be improved upon, though we expect the benefits to be
+marginal in most cases.
+
+The first is to do a thorough exploration of the available BLAS implementations to determine which has the best
+performance for this particular use case. While developing Lagrange-ng, we tried many different BLAS implementations,
+but we did not do a complete investigation as to which had the best performance for the expected datasets. The second is
+to further refine the matrix exponential routine. While we settled on a particular implementation with good performance,
+there are other, more exotic methods which might yield better performance. Third is to further refine the work
+allocation for the coarse grained parallelization. The current method of assigning tasks is quite na\"ive, and can be
+improved upon by becoming aware of which nodes are "most blocking" of other tasks. It might be possible to devise an
+algorithm that can minimize the "task starved" period of computation.
 
 \bigskip
 
 \section{Availability}\label{sec:availability}
 
-The software, tools, and data used for this paper are available online at \url{https://github.com/computations/lagrange-ng}.
+The software, tools, and data used for this paper are available online at
+\url{https://github.com/computations/lagrange-ng}.
 
 \section{Supplementary Material}
 

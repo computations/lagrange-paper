@@ -47,13 +47,6 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-\end{abstract}
-
-\keywords{First keyword \and Second keyword \and More}
-
-\section{Introduction}
-
 \section{Background}
 
 Computation of the likelihood of a particular set of parameters under the DEC model proceeds in a fashion similar to the
@@ -74,7 +67,7 @@ computing
   \item The right and left rate matrices: $Q_r$, $Q_l$,
   \item The right and left transition matrices: $P_r = e^{Q_r}$ and $P_l = e^{Q_l}$ respectively,
   \item The result of the Markov process along the left and right branches: $w_r = P_r v_r$ and $w_l = P_l v_l$
-    respectively,
+        respectively,
   \item The weighted combination of $w_r$ and $w_l$, $v_t$.
 \end{enumerate}
 Together, these operations make up a single task for a worker. However, as it can be seen above, the task can be
@@ -111,7 +104,7 @@ operations show a larger value. If this is the case, then the dependant operatio
 operation is ready.
 
 By carefully dividing the tasks into operations, merging identical operations between tasks, and enforcing a total order
-on the computation of operations, we can implement an extremely effective task based parallelization scheme. 
+on the computation of operations, we can implement an extremely effective task based parallelization scheme.
 
 \begin{figure}
   \centering
@@ -162,7 +155,7 @@ distance between distributions. This will indeed produce a metric, but it has so
 example, suppose we have a distribution over 5 regions: $A, B, C, D$, and $E$ where $d_1(n, AB) = 1.0$. If we use the
 cosine distance to compute the distance between $d_1(n)$ and $d_2(n)$ where $d_2(n, ABC) = 1.0$, then the resulting
 distance will be 1.0, as the vectors are orthogonal. However, this is the same distance as if instead $d_2(n, CDE) =
-1.0$ as it is also orthogonal to $d_1(n)$. But, there is a very real sense in which the prediction $AB$ is much closer
+  1.0$ as it is also orthogonal to $d_1(n)$. But, there is a very real sense in which the prediction $AB$ is much closer
 to $ABC$ than $CDE$. In the first case, the predicted ranges differ by only one region, whereas in the second case, the
 predicted ranges differ by \textit{every} region.
 
@@ -176,7 +169,7 @@ model\footnotemark.
   of the edges, which means that transitions \textit{out} of the extinct state are valid. While conceptually this is a
   problem, for the purposes of computing a distance, it will not affect the results, as taking the path through the
   extinction state is equivalent to taking any other path of equal distance, of which there necessarily be due to the
-nature of the hypercube.}
+  nature of the hypercube.}
 
 Once the distributions are embedded in a hypercube graph, we can compute the distance between each distribution as the
 ``amount of effort required to turn one distribution into the other''. This is the Wasserstein metric, also known as the
@@ -189,9 +182,9 @@ minimum distance requires the use of an optimization routine.
 To find the minimum distance, we elected to express the problem as a linear programming problem. Specifically, we solve
 
 \begin{align}
-&\min_x \textstyle \sum_i x_i \nonumber \\
-\text{such } &\text{that } Ax = b\\
-             & x_i \geq 0 \nonumber
+               & \min_x \textstyle \sum_i x_i \nonumber \\
+  \text{such } & \text{that } Ax = b                    \\
+               & x_i \geq 0 \nonumber
 \end{align}
 
 Where $A$ is the constraint matrix induced by the hypercube, and $b = d_1(n) - d_2(n)$ I.E. difference between the two
@@ -200,9 +193,9 @@ columns. The rows represent the nodes of the graph, and the columns represent th
 each direction of flow. The entries of $A$ are defined as:
 \begin{equation}
   A(n, e) = \begin{cases}
-    1 &\text{If } e \text{ points to } n\\
-    -1 &\text{If } e \text{ points away from } n\\
-    0 &\text{Otherwise.}
+    1  & \text{If } e \text{ points to } n        \\
+    -1 & \text{If } e \text{ points away from } n \\
+    0  & \text{Otherwise.}
   \end{cases}
 \end{equation}
 Please note that there are only $n-1$ rows. This is because the final row will just be expressible as a linear
@@ -214,18 +207,18 @@ As an example, the distance between the distributions in Figure~\ref{fig:distrib
 matrix
 \begin{equation*}
   A = \begin{pmatrix}
-  1 & 0 & 1 & 0 & 0 & 0  \\
-  -1 & -1 & 0 & 0 & 1 & 0 \\
-  0 & 0 & -1 & -1 & 0 & 1\\
+    1  & 0  & 1  & 0  & 0 & 0 \\
+    -1 & -1 & 0  & 0  & 1 & 0 \\
+    0  & 0  & -1 & -1 & 0 & 1 \\
   \end{pmatrix}
 \end{equation*}
 and the vector
 \begin{equation*}
-b = \begin{pmatrix}
-  0 \\
-  0.25\\
-  0.25\\
-\end{pmatrix}.
+  b = \begin{pmatrix}
+    0    \\
+    0.25 \\
+    0.25 \\
+  \end{pmatrix}.
 \end{equation*}
 
 Finally, in order to normalize the distance, we divide the result by maximum possible path length, which happens to be
@@ -252,9 +245,9 @@ the number of \textit{regions}.
     \includegraphics[width=0.95\textwidth]{figures/example-earthmovers.pdf}
   \end{center}
   \caption{Distributions from Figure~\ref{fig:distributions-example} with the Wasserstein metric applied. On the left,
-    we choose to move $0.25$ units of ``mass'' from node \texttt{10} to node \texttt{01}. This requires 2 transitions, shown
-  in blue, for a total of $0.5$ distance. On the right, we choose to transfer mass from node \texttt{01} to node
-\texttt{10}, which yields the same result.}
+    we choose to move $0.25$ units of ``mass'' from node \texttt{10} to node \texttt{01}. This requires 2 transitions,
+    shown in blue, for a total of $0.5$ distance. On the right, we choose to transfer mass from node \texttt{01} to node
+    \texttt{10}, which yields the same result.}
   \label{fig:earthmovers-example}
 \end{figure}
 
@@ -262,14 +255,72 @@ the number of \textit{regions}.
 \section{Experiments}
 \label{sec:experiments}
 
-\section{Results}
-\label{sec:results}
+\subsection{Investigating the Optimal Threading Configuration}
+
+Because Lagrange-ng implements both course and fine grained parallelization, we need to investigate the optimal
+threading configuration for a given dataset. To this end, we generated datasets with 50 or 100 taxa and 5, 6, 7, or 8
+regions. This yielded a total of 8 dataset configurations. In addition to the dataset configurations, we also generated
+the 6 threading configurations with a total number of 32 threads. For each of these dataset and threading
+configurations, we ran 100 trials and recorded the times. The results from these runs can be seen in
+Figure~\ref{fig:threading-configurations}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/threading_violin.png}
+  \end{center}
+  \caption{Plot of the threading configurations on various dataset sizes. 100 datasets were generated for each Taxa,
+    Region, and Threading Configuration parameters. Each dataset was generated randomly, similar to how datasets are
+    constructed in the rest of this work.}
+  \label{fig:threading-configurations}
+\end{figure}
+
+\subsection{Determining the parallel efficiency of Lagrange-ng}
+
+Given the results from the previous experiment to determine the optimal threading configuration, we choose to determine
+the parallel efficiency of the Lagrange-ng using only workers. This is to say, we only increased the number of threads
+allocated to the coarse grained tasks. To this end we tested Lagrange-ng with 1, 4, 8, 16, and 32 threads by generating
+100 datasets for each threading configuration. We did this with datasets with 6 regions and 100 and 500 taxa. We
+computed the mean of the execution times for the runs with a single thread, and used this value to compute the
+realized speedups.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/peff_100_taxa.png}
+  \end{center}
+  \caption{Parallel efficiency plot for a datasets with 100 taxa and 6 regions. Please notice the log-log scaling. The
+    actual values plotted are 3.0, 4.1, 4.7, 4.8 for 4, 8, 16, 32 threads, respectively. The ratio of the realized
+    speedup to the optimal speedup is 0.742873, 0.513696, 0.295814, 0.149044 for 4, 8, 16 and 32 threads respectively.}
+  \label{fig:peff-100-taxa}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/peff_500_taxa.png}
+  \end{center}
+  \caption{Parallel efficiency plot for a datasets with 500 taxa and 6 regions. Please notice the log-log scaling. The
+    actual values plotted are 3.3, 5.5, 7., 9.3 for 4, 8, 16, and 32 threads, respectively. The ratio of the realized
+    speedup to the optimal speedup is 0.83, 0.69, 0.49, 0.29 for 4, 8, 16, and 32 threads, respectively.}
+  \label{fig:peff-100-taxa}
+\end{figure}
+
 
 \section{Discussion}
 \label{sec:discussion}
 
-\section{Conclusion}
-\label{sec:conclusion}
+Regarding the optimal threading configuration, Figure~\ref{fig:threading-configurations} shows that allocating all the
+threads to workers is normally optimal. Occasionally, allocating 2 threads per worker is slightly faster. This is
+slightly surprising, and might indicate that the linear algebra library used has issues with lock contention. If this is
+the case, then changing the library might improve results. However, there are still sequential parts of the likelihood
+computation which does not benefit from the fine grained parallelization, so this will have improvement a limit.
+
+The threading efficiency of Lagrange-ng's coarse grained parallelization ranges between  0.74 and 0.14. This is
+expected, as the method of parallelization is based on the tree topology. Children nodes must be evaluated before parent
+nodes can be evaluated, which leads to a dependencies which prevent perfect parallel efficiency from being achieved.
+This means that, for every likelihood evaluation, there is a period where there is less work available than threads. In
+this case the threads idle, and do no meaningful work. However, we expect that as the number of taxa grows, the
+efficiency of this method should increase, as the proportion of time spent in this "work starved" period is lower.
+Results from the threading configuration experiments suggest that this can efficiency can be improved further on some
+datasets by allocating 2 threads per worker.
 
 \bibliographystyle{acm}
 \bibliography{references}
